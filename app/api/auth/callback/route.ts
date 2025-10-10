@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     });
     response.cookies.set('oauth_state', '', { maxAge: 0, path: '/' });
     return response;
-  } catch (e) {
+  } catch {
     const baseUrl = `${request.headers.get('x-forwarded-proto') || 'https'}://${request.headers.get('host')}`;
     const response = NextResponse.redirect(`${baseUrl}/?error=auth_failed`);
     response.cookies.set('oauth_state', '', { maxAge: 0, path: '/' });

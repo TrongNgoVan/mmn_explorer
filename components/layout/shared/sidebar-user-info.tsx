@@ -1,14 +1,21 @@
+// Định nghĩa User đúng chuẩn, không dùng any
 'use client';
+interface User {
+  avatar?: string;
+  display_name?: string;
+  username?: string;
+  [key: string]: unknown;
+}
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 
 export function SidebarUserInfo() {
-  const [user, setUser] = React.useState<any>(null);
-  const [loading, setLoading] = React.useState(true);
-  const [showModal, setShowModal] = React.useState(false);
+  const [user, setUser] = React.useState<User | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
   const [popoverPos, setPopoverPos] = React.useState<{ top: number; left: number } | null>(null);
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     setMounted(true);

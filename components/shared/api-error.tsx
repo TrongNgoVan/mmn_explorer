@@ -12,11 +12,10 @@ interface ApiErrorProps {
 }
 
 export const ApiError = ({
-  error,
   onRetry,
   title = 'Failed to load data',
   description = 'There was an error loading the data. Please try again.',
-}: ApiErrorProps) => {
+}: Omit<ApiErrorProps, 'error'>) => {
   const handleRetry = () => {
     if (onRetry) {
       onRetry();
