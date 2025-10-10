@@ -51,7 +51,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-4 flex flex-col h-full">
+      <SidebarContent className="flex h-full flex-col px-2 py-4">
         <SidebarGroup className="flex-1">
           <SidebarGroupContent>
             <SidebarMenu>

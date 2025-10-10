@@ -1,13 +1,13 @@
-"use client";
-import * as React from "react";
-import { createPortal } from "react-dom";
-import Image from "next/image";
+'use client';
+import * as React from 'react';
+import { createPortal } from 'react-dom';
+import Image from 'next/image';
 
 export function SidebarUserInfo() {
   const [user, setUser] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [showModal, setShowModal] = React.useState(false);
-  const [popoverPos, setPopoverPos] = React.useState<{top: number, left: number} | null>(null);
+  const [popoverPos, setPopoverPos] = React.useState<{ top: number; left: number } | null>(null);
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -16,7 +16,7 @@ export function SidebarUserInfo() {
 
   React.useEffect(() => {
     if (!mounted) return;
-    fetch("/api/me/user")
+    fetch('/api/me/user')
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setUser(data && !data.error ? data : null);
@@ -25,12 +25,12 @@ export function SidebarUserInfo() {
   }, [mounted]);
 
   const handleLogin = () => {
-    window.location.href = "/api/auth/login";
+    window.location.href = '/api/auth/login';
   };
   const handleLogout = async () => {
-    await fetch("/api/auth/logout");
+    await fetch('/api/auth/logout');
     setUser(null);
-    window.location.href = "/";
+    window.location.href = '/';
   };
 
   // Xác định vị trí popover ngoài sidebar
@@ -56,53 +56,57 @@ export function SidebarUserInfo() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-2 p-4 border-t border-gray-200 relative">
+    <div className="relative flex flex-col items-center gap-2 border-t border-gray-200 p-4">
       {user ? (
         <>
           <button
-            className="flex items-center gap-2 w-full hover:bg-gray-100 rounded p-2"
+            className="flex w-full items-center gap-2 rounded p-2 hover:bg-gray-100"
             onClick={handleUserInfoClick}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
           >
             <Image
-              src={user.avatar || "/default-avatar.png"}
+              src={user.avatar || '/default-avatar.png'}
               alt="avatar"
               width={32}
               height={32}
               className="rounded-full border border-gray-300"
             />
-            <span className="font-semibold text-sm truncate">{user.display_name || user.username || "User"}</span>
+            <span className="truncate text-sm font-semibold">{user.display_name || user.username || 'User'}</span>
           </button>
           {/* Popover user info ngoài sidebar */}
-          {showModal && popoverPos && mounted && typeof window !== 'undefined' && createPortal(
-            <div
-              className="fixed z-[9999] bg-white rounded-lg shadow-lg border border-gray-200 p-4 animate-fade-in"
-              style={{
-                top: popoverPos.top,
-                left: popoverPos.left,
-                boxShadow: '0 4px 24px #0001',
-                minWidth: 340,
-                maxWidth: 420,
-                width: 'auto',
-              }}
-              onClick={e => e.stopPropagation()}
-            >
-              <div className="flex flex-col gap-1 text-xs text-gray-700">
-                {Object.entries(user)
-                  .filter(([key]) => key !== 'avatar' && key !== 'display_name')
-                  .map(([key, value]) => (
-                    <div key={key} className="flex justify-between gap-2">
-                      <span className="font-semibold capitalize whitespace-nowrap">{key.replace(/_/g, ' ')}:</span>
-                      <span className="break-all text-right">{String(value)}</span>
-                    </div>
-                  ))}
-              </div>
-            </div>,
-            window.document.body
-          )}
+          {showModal &&
+            popoverPos &&
+            mounted &&
+            typeof window !== 'undefined' &&
+            createPortal(
+              <div
+                className="animate-fade-in fixed z-[9999] rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+                style={{
+                  top: popoverPos.top,
+                  left: popoverPos.left,
+                  boxShadow: '0 4px 24px #0001',
+                  minWidth: 340,
+                  maxWidth: 420,
+                  width: 'auto',
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex flex-col gap-1 text-xs text-gray-700">
+                  {Object.entries(user)
+                    .filter(([key]) => key !== 'avatar' && key !== 'display_name')
+                    .map(([key, value]) => (
+                      <div key={key} className="flex justify-between gap-2">
+                        <span className="font-semibold whitespace-nowrap capitalize">{key.replace(/_/g, ' ')}:</span>
+                        <span className="text-right break-all">{String(value)}</span>
+                      </div>
+                    ))}
+                </div>
+              </div>,
+              window.document.body
+            )}
           <button
             onClick={handleLogout}
-            className="w-full mt-2 py-1.5 rounded bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold text-sm transition-all duration-150 shadow-sm hover:scale-[1.04] hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
+            className="mt-2 w-full cursor-pointer rounded bg-gradient-to-r from-purple-500 to-purple-700 py-1.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:scale-[1.04] hover:shadow-lg focus:ring-2 focus:ring-purple-400 focus:outline-none active:scale-95"
           >
             Logout
           </button>
@@ -110,7 +114,7 @@ export function SidebarUserInfo() {
       ) : (
         <button
           onClick={handleLogin}
-          className="w-full py-1.5 rounded bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold text-sm transition-all duration-150 shadow-sm hover:scale-[1.04] hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
+          className="w-full cursor-pointer rounded bg-gradient-to-r from-purple-500 to-purple-700 py-1.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:scale-[1.04] hover:shadow-lg focus:ring-2 focus:ring-purple-400 focus:outline-none active:scale-95"
         >
           Login with Mezon
         </button>
