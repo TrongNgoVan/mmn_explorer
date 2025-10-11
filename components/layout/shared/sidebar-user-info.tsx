@@ -1,4 +1,3 @@
-// Định nghĩa User đúng chuẩn, không dùng any
 'use client';
 interface User {
   avatar?: string;
@@ -9,8 +8,11 @@ interface User {
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { UserDetailPopover } from './user-detail-popover';
 
 export function SidebarUserInfo() {
+  const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
+  const [showSensitive, setShowSensitive] = React.useState<Record<string, boolean>>({});
   const [user, setUser] = React.useState<User | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -40,17 +42,14 @@ export function SidebarUserInfo() {
     window.location.href = '/';
   };
 
-  // Xác định vị trí popover ngoài sidebar
   const handleUserInfoClick = (e: React.MouseEvent) => {
     setShowModal((v) => {
       if (!v) {
-        // Lấy vị trí button trên viewport
         const rect = (e.target as HTMLElement).closest('button')?.getBoundingClientRect();
         if (rect) {
           setPopoverPos({
-            // Đặt bottom popover ngang với top của button (nổi lên trên)
-            top: rect.top - 180, // popover nổi lên trên nhiều hơn (tùy chỉnh chiều cao popover)
-            left: rect.right + 16,
+            top: rect.top - 350,
+            left: rect.left + rect.width / 2 - 120,
           });
         }
       }
@@ -61,7 +60,6 @@ export function SidebarUserInfo() {
   if (!mounted || loading) {
     return <div className="p-4 text-sm text-gray-400">Loading...</div>;
   }
-
   return (
     <div className="relative flex flex-col items-center gap-2 border-t border-gray-200 p-4">
       {user ? (
@@ -74,41 +72,25 @@ export function SidebarUserInfo() {
             <Image
               src={user.avatar || '/default-avatar.png'}
               alt="avatar"
-              width={32}
-              height={32}
-              className="rounded-full border border-gray-300"
+              width={40}
+              height={40}
+              className="rounded-full border-2 border-white shadow"
             />
-            <span className="truncate text-sm font-semibold">{user.display_name || user.username || 'User'}</span>
+            <span className="truncate text-base font-semibold">{user.display_name || user.username || 'User'}</span>
           </button>
-          {/* Popover user info ngoài sidebar */}
           {showModal &&
             popoverPos &&
             mounted &&
             typeof window !== 'undefined' &&
             createPortal(
-              <div
-                className="animate-fade-in fixed z-[9999] rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
-                style={{
-                  top: popoverPos.top,
-                  left: popoverPos.left,
-                  boxShadow: '0 4px 24px #0001',
-                  minWidth: 340,
-                  maxWidth: 420,
-                  width: 'auto',
-                }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex flex-col gap-1 text-xs text-gray-700">
-                  {Object.entries(user)
-                    .filter(([key]) => key !== 'avatar' && key !== 'display_name')
-                    .map(([key, value]) => (
-                      <div key={key} className="flex justify-between gap-2">
-                        <span className="font-semibold whitespace-nowrap capitalize">{key.replace(/_/g, ' ')}:</span>
-                        <span className="text-right break-all">{String(value)}</span>
-                      </div>
-                    ))}
-                </div>
-              </div>,
+              <UserDetailPopover
+                user={user}
+                showSensitive={showSensitive}
+                setShowSensitive={setShowSensitive}
+                copiedKey={copiedKey}
+                setCopiedKey={setCopiedKey}
+                popoverPos={popoverPos}
+              />,
               window.document.body
             )}
           <button
