@@ -1,5 +1,4 @@
 import { Table } from '@/components/ui/table';
-import { APP_CONFIG } from '@/configs/app.config';
 import { IWallet } from '@/modules/wallet/type';
 import { TTableColumn } from '@/types';
 import {
@@ -34,11 +33,11 @@ export const WalletsTable = ({ wallets, skeletonLength = PAGINATION.DEFAULT_LIMI
       renderCell: (row) => <WalletAddressDisplay address={row.address} className="w-60" />,
       skeletonContent: <WalletAddressDisplaySkeleton className="w-60" />,
     },
-    {
-      headerContent: `Balance ${APP_CONFIG.CHAIN_SYMBOL}`,
-      renderCell: (row) => <BalanceAmount balance={row.balance} showSymbol={false} />,
-      skeletonContent: <BalanceAmountSkeleton />,
-    },
+    // {
+    //   headerContent: 'Balance',
+    //   renderCell: (row) => <BalanceAmount balance={row.balance} showSymbol={false} />,
+    //   skeletonContent: <BalanceAmountSkeleton />,
+    // },
     {
       headerContent: 'Txn Count',
       renderCell: (row) => <TxnLink address={row.address} accountNonce={row.transaction_count} />,

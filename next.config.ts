@@ -1,10 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  /* config options here */
   output: 'standalone',
-  images: {
-    domains: ['cdn.mezon.ai', 'cdn.mezon.vn'],
-  },
 };
 
 export default nextConfig;

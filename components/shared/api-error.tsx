@@ -15,7 +15,7 @@ export const ApiError = ({
   onRetry,
   title = 'Failed to load data',
   description = 'There was an error loading the data. Please try again.',
-}: Omit<ApiErrorProps, 'error'>) => {
+}: ApiErrorProps) => {
   const handleRetry = () => {
     if (onRetry) {
       onRetry();

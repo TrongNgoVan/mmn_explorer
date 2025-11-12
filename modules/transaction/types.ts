@@ -18,7 +18,7 @@ export interface ITransaction {
   transaction_type: ETransactionType;
   value: string;
   transaction_timestamp: number;
-  block_timestamp: number;
+  text_data?: string;
 }
 
 export interface ITransactionListParams {
