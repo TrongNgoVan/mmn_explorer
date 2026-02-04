@@ -1,34 +1,22 @@
 'use client';
 
-import { CreditCardRefresh, Cube01, Hourglass01, Wallet02 } from '@/assets/icons';
 import { StatCard } from './stat-card';
-import { useStats } from '../../hooks/useStas';
+import { StatTitle } from './stat-titles';
+import { Cube01, Transaction, Clock, Wallet02 } from '@/assets/icons';
 
-export const Stats = () => {
-  const stats = useStats();
+interface StatsProps {
+  blockStats?: number;
+  totalTxStats?: number;
+  avgBlockTimeStats?: number;
+  totalWalletsStats?: number;
+}
 
+export const Stats = ({ blockStats = 0, totalTxStats = 0, avgBlockTimeStats = 0, totalWalletsStats = 0 }: StatsProps) => {
   const statCards = [
-    {
-      icon: Cube01,
-      title: 'Total Blocks',
-      value: stats?.total_blocks,
-    },
-    {
-      icon: CreditCardRefresh,
-      title: 'Total Transactions',
-      value: stats?.total_transactions,
-    },
-    {
-      icon: Hourglass01,
-      title: 'Average Block Time',
-      value: stats?.average_block_time,
-      subValue: '(s)',
-    },
-    {
-      icon: Wallet02,
-      title: 'Total Wallet',
-      value: stats?.total_wallets,
-    },
+    { title: StatTitle.TotalBlocks, value: blockStats, icon: Cube01 },
+    { title: StatTitle.TotalTransactions, value: totalTxStats, icon: Transaction },
+    { title: StatTitle.AverageBlockTime, value: avgBlockTimeStats, subValue: '(s)', icon: Clock },
+    { title: StatTitle.TotalWallet, value: totalWalletsStats, icon: Wallet02 },
   ];
 
   return (
