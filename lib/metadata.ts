@@ -3,11 +3,16 @@ import type { Metadata } from 'next';
 interface MetadataConfig {
   title: string;
   description: string;
+  /** Optional path part of the URL, e.g. "/blocks" */
+  path?: string;
   ogImage?: string;
 }
 
+const BASE_URL = 'https://mmn-explorer.vercel.app';
+
 export function generateMetadata(config: MetadataConfig): Metadata {
-  const { title, description, ogImage = 'https://mmn-explorer.vercel.app/og/dashboard.png' } = config;
+  const { title, description, path, ogImage = `${BASE_URL}/og/dashboard.png` } = config;
+  const url = path ? `${BASE_URL}${path}` : BASE_URL;
 
   return {
     title,
@@ -15,8 +20,8 @@ export function generateMetadata(config: MetadataConfig): Metadata {
     openGraph: {
       title,
       description,
-      url: 'https://mmn-explorer.vercel.app',
-      siteName: 'Mezon Đòng',
+      url,
+      siteName: 'Mezon Dong',
       images: [
         {
           url: ogImage,

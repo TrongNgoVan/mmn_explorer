@@ -4,6 +4,7 @@ import { generateMetadata } from '@/lib/metadata';
 export const metadata = generateMetadata({
   title: 'Transactions | Mezon Dong',
   description: 'Mezon Mainnet Transaction Explorer',
+  path: '/transactions',
 });
 
 export default function TransactionsLayout({ children }: { children: React.ReactNode }) {
